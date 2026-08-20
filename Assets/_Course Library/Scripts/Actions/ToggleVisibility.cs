@@ -1,14 +1,23 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+/// <summary>
+/// This script toggles the visibility of a GameObject.
+/// </summary>
 
 public class ToggleVisibility : MonoBehaviour
 {
-    public GameObject labels;
+    private Renderer currentRenderer = null;
+
+    private void Awake()
+    {
+        currentRenderer = GetComponent<Renderer>();
+    }
 
     public void Toggle()
     {
-        if (labels != null)
-        {
-            labels.SetActive(!labels.activeSelf);
-        }
+        bool isEnable = !currentRenderer.enabled;
+        currentRenderer.enabled = isEnable;
     }
 }
