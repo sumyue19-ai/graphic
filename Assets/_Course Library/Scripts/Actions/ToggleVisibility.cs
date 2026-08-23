@@ -17,7 +17,7 @@ public class ToggleVisibility : MonoBehaviour
 
     public void Toggle()
     {
-        bool isEnable = !currentRenderer.enabled;
-        currentRenderer.enabled = isEnable;
+        bool isEnabled = !currentRenderer.enabled;
+        currentRenderer.enabled = isEnabled;
     }
 }
