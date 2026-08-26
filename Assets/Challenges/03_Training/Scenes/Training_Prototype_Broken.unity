@@ -21474,7 +21474,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1872441296}
   - component: {fileID: 1872441298}
-  - component: {fileID: 1872441297}
   m_Layer: 2
   m_Name: Reset Button
   m_TagString: Untagged
@@ -21498,18 +21497,6 @@ Transform:
   - {fileID: 1351571033}
   m_Father: {fileID: 1131438064}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1872441297
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1872441295}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67ddb01715fbbc34fb1b56a1a852d398, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1872441298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21625,6 +21612,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1145393436748058495}
+        m_TargetAssemblyTypeName: PlaySoundsFromList, Assembly-CSharp
+        m_MethodName: PlayAtIndex
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
