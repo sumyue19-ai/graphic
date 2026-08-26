@@ -17170,54 +17170,6 @@ MonoBehaviour:
     startIsKinematic: 0
     startUseGravity: 0
     startConstraints: 0
-  - target: {fileID: 9152294701084620516}
-    startPosition: {x: 0, y: 0, z: 0}
-    startRotation: {x: 0, y: 0, z: 0, w: 0}
-    startActive: 0
-    hasRigidbody: 0
-    startIsKinematic: 0
-    startUseGravity: 0
-    startConstraints: 0
-  - target: {fileID: 4502080887094448763}
-    startPosition: {x: 0, y: 0, z: 0}
-    startRotation: {x: 0, y: 0, z: 0, w: 0}
-    startActive: 0
-    hasRigidbody: 0
-    startIsKinematic: 0
-    startUseGravity: 0
-    startConstraints: 0
-  - target: {fileID: 6324349190722330084}
-    startPosition: {x: 0, y: 0, z: 0}
-    startRotation: {x: 0, y: 0, z: 0, w: 0}
-    startActive: 0
-    hasRigidbody: 0
-    startIsKinematic: 0
-    startUseGravity: 0
-    startConstraints: 0
-  - target: {fileID: 6324349190692529312}
-    startPosition: {x: 0, y: 0, z: 0}
-    startRotation: {x: 0, y: 0, z: 0, w: 0}
-    startActive: 0
-    hasRigidbody: 0
-    startIsKinematic: 0
-    startUseGravity: 0
-    startConstraints: 0
-  - target: {fileID: 7863669397899538604}
-    startPosition: {x: 0, y: 0, z: 0}
-    startRotation: {x: 0, y: 0, z: 0, w: 0}
-    startActive: 0
-    hasRigidbody: 0
-    startIsKinematic: 0
-    startUseGravity: 0
-    startConstraints: 0
-  - target: {fileID: 7863669396577847636}
-    startPosition: {x: 0, y: 0, z: 0}
-    startRotation: {x: 0, y: 0, z: 0, w: 0}
-    startActive: 0
-    hasRigidbody: 0
-    startIsKinematic: 0
-    startUseGravity: 0
-    startConstraints: 0
   - target: {fileID: 1718703366}
     startPosition: {x: 0, y: 0, z: 0}
     startRotation: {x: 0, y: 0, z: 0, w: 0}
@@ -18360,7 +18312,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1580243678
 Transform:
   m_ObjectHideFlags: 0
