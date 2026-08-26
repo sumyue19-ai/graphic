@@ -17086,66 +17086,146 @@ MonoBehaviour:
     startPosition: {x: 0, y: 0, z: 0}
     startRotation: {x: 0, y: 0, z: 0, w: 0}
     startActive: 0
+    hasRigidbody: 0
+    startIsKinematic: 0
+    startUseGravity: 0
+    startConstraints: 0
   - target: {fileID: 203819837}
     startPosition: {x: 0, y: 0, z: 0}
     startRotation: {x: 0, y: 0, z: 0, w: 0}
     startActive: 0
+    hasRigidbody: 0
+    startIsKinematic: 0
+    startUseGravity: 0
+    startConstraints: 0
   - target: {fileID: 531403572}
     startPosition: {x: 0, y: 0, z: 0}
     startRotation: {x: 0, y: 0, z: 0, w: 0}
     startActive: 0
+    hasRigidbody: 0
+    startIsKinematic: 0
+    startUseGravity: 0
+    startConstraints: 0
   - target: {fileID: 898355185}
     startPosition: {x: 0, y: 0, z: 0}
     startRotation: {x: 0, y: 0, z: 0, w: 0}
     startActive: 0
+    hasRigidbody: 0
+    startIsKinematic: 0
+    startUseGravity: 0
+    startConstraints: 0
   - target: {fileID: 1147109799}
     startPosition: {x: 0, y: 0, z: 0}
     startRotation: {x: 0, y: 0, z: 0, w: 0}
     startActive: 0
+    hasRigidbody: 0
+    startIsKinematic: 0
+    startUseGravity: 0
+    startConstraints: 0
   - target: {fileID: 49734232}
     startPosition: {x: 0, y: 0, z: 0}
     startRotation: {x: 0, y: 0, z: 0, w: 0}
     startActive: 0
+    hasRigidbody: 0
+    startIsKinematic: 0
+    startUseGravity: 0
+    startConstraints: 0
   - target: {fileID: 1124768095}
     startPosition: {x: 0, y: 0, z: 0}
     startRotation: {x: 0, y: 0, z: 0, w: 0}
     startActive: 0
+    hasRigidbody: 0
+    startIsKinematic: 0
+    startUseGravity: 0
+    startConstraints: 0
   - target: {fileID: 988422737}
     startPosition: {x: 0, y: 0, z: 0}
     startRotation: {x: 0, y: 0, z: 0, w: 0}
     startActive: 0
+    hasRigidbody: 0
+    startIsKinematic: 0
+    startUseGravity: 0
+    startConstraints: 0
   - target: {fileID: 1793308539}
     startPosition: {x: 0, y: 0, z: 0}
     startRotation: {x: 0, y: 0, z: 0, w: 0}
     startActive: 0
+    hasRigidbody: 0
+    startIsKinematic: 0
+    startUseGravity: 0
+    startConstraints: 0
   - target: {fileID: 1320904623}
     startPosition: {x: 0, y: 0, z: 0}
     startRotation: {x: 0, y: 0, z: 0, w: 0}
     startActive: 0
+    hasRigidbody: 0
+    startIsKinematic: 0
+    startUseGravity: 0
+    startConstraints: 0
   - target: {fileID: 7541936462315295362}
     startPosition: {x: 0, y: 0, z: 0}
     startRotation: {x: 0, y: 0, z: 0, w: 0}
     startActive: 0
+    hasRigidbody: 0
+    startIsKinematic: 0
+    startUseGravity: 0
+    startConstraints: 0
   - target: {fileID: 9152294701084620516}
     startPosition: {x: 0, y: 0, z: 0}
     startRotation: {x: 0, y: 0, z: 0, w: 0}
     startActive: 0
+    hasRigidbody: 0
+    startIsKinematic: 0
+    startUseGravity: 0
+    startConstraints: 0
   - target: {fileID: 4502080887094448763}
     startPosition: {x: 0, y: 0, z: 0}
     startRotation: {x: 0, y: 0, z: 0, w: 0}
     startActive: 0
+    hasRigidbody: 0
+    startIsKinematic: 0
+    startUseGravity: 0
+    startConstraints: 0
   - target: {fileID: 6324349190722330084}
     startPosition: {x: 0, y: 0, z: 0}
     startRotation: {x: 0, y: 0, z: 0, w: 0}
     startActive: 0
+    hasRigidbody: 0
+    startIsKinematic: 0
+    startUseGravity: 0
+    startConstraints: 0
   - target: {fileID: 6324349190692529312}
     startPosition: {x: 0, y: 0, z: 0}
     startRotation: {x: 0, y: 0, z: 0, w: 0}
     startActive: 0
+    hasRigidbody: 0
+    startIsKinematic: 0
+    startUseGravity: 0
+    startConstraints: 0
+  - target: {fileID: 7863669397899538604}
+    startPosition: {x: 0, y: 0, z: 0}
+    startRotation: {x: 0, y: 0, z: 0, w: 0}
+    startActive: 0
+    hasRigidbody: 0
+    startIsKinematic: 0
+    startUseGravity: 0
+    startConstraints: 0
+  - target: {fileID: 7863669396577847636}
+    startPosition: {x: 0, y: 0, z: 0}
+    startRotation: {x: 0, y: 0, z: 0, w: 0}
+    startActive: 0
+    hasRigidbody: 0
+    startIsKinematic: 0
+    startUseGravity: 0
+    startConstraints: 0
   - target: {fileID: 1718703366}
     startPosition: {x: 0, y: 0, z: 0}
     startRotation: {x: 0, y: 0, z: 0, w: 0}
     startActive: 0
+    hasRigidbody: 0
+    startIsKinematic: 0
+    startUseGravity: 0
+    startConstraints: 0
   boxBlocker: {fileID: 41552074}
   magnetSocket: {fileID: 8477993898470408151}
 --- !u!4 &1455461254
@@ -35851,7 +35931,7 @@ Transform:
   m_GameObject: {fileID: 7863669396962942830}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.05, z: 0}
+  m_LocalPosition: {x: 0.012, y: 0.017, z: 0}
   m_LocalScale: {x: 0.1, y: 0.05, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
