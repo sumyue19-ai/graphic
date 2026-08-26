@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -12,16 +13,20 @@ public class TrainingReset : MonoBehaviour
         [HideInInspector] public Vector3 startPosition;
         [HideInInspector] public Quaternion startRotation;
         [HideInInspector] public bool startActive;
+
+        [HideInInspector] public bool hasRigidbody;
+        [HideInInspector] public bool startIsKinematic;
+        [HideInInspector] public bool startUseGravity;
+        [HideInInspector] public RigidbodyConstraints startConstraints;
     }
 
     public List<ResetObject> objectsToReset = new List<ResetObject>();
 
     public GameObject boxBlocker;
-
-    // The magnet's socket
     public XRSocketInteractor magnetSocket;
 
     private bool boxBlockerStartState;
+    private bool magnetSocketStartEnabled;
 
     private void Start()
     {
@@ -33,32 +38,75 @@ public class TrainingReset : MonoBehaviour
             obj.startPosition = obj.target.transform.position;
             obj.startRotation = obj.target.transform.rotation;
             obj.startActive = obj.target.activeSelf;
+
+            Rigidbody rb = obj.target.GetComponent<Rigidbody>();
+
+            if (rb != null)
+            {
+                obj.hasRigidbody = true;
+                obj.startIsKinematic = rb.isKinematic;
+                obj.startUseGravity = rb.useGravity;
+                obj.startConstraints = rb.constraints;
+            }
         }
 
         if (boxBlocker != null)
         {
             boxBlockerStartState = boxBlocker.activeSelf;
         }
+
+        if (magnetSocket != null)
+        {
+            magnetSocketStartEnabled = magnetSocket.enabled;
+        }
     }
 
     public void ResetTraining()
     {
-        // IMPORTANT:
-        // Release anything currently attached to the magnet socket.
+        StartCoroutine(ResetRoutine());
+    }
+
+    private IEnumerator ResetRoutine()
+    {
+        // 1. Release anything held by magnet
         if (magnetSocket != null)
         {
-            var interactable = magnetSocket.GetOldestInteractableSelected();
+            List<IXRSelectInteractable> selectedObjects =
+                new List<IXRSelectInteractable>(magnetSocket.interactablesSelected);
 
-            if (interactable != null)
+            foreach (IXRSelectInteractable interactable in selectedObjects)
             {
-                magnetSocket.interactionManager.SelectExit(
-                    magnetSocket,
-                    interactable
-                );
+                if (interactable != null)
+                {
+                    magnetSocket.interactionManager.SelectExit(
+                        magnetSocket,
+                        interactable
+                    );
+                }
+            }
+
+            magnetSocket.enabled = false;
+        }
+
+        yield return null;
+
+        // 2. Freeze rigidbodies first
+        foreach (ResetObject obj in objectsToReset)
+        {
+            if (obj.target == null)
+                continue;
+
+            Rigidbody rb = obj.target.GetComponent<Rigidbody>();
+
+            if (rb != null)
+            {
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+                rb.isKinematic = true;
             }
         }
 
-        // Now reset all objects.
+        // 3. Restore positions and rotations
         foreach (ResetObject obj in objectsToReset)
         {
             if (obj.target == null)
@@ -68,19 +116,41 @@ public class TrainingReset : MonoBehaviour
 
             obj.target.transform.position = obj.startPosition;
             obj.target.transform.rotation = obj.startRotation;
+        }
+
+        // 4. Restore BoxBlocker
+        if (boxBlocker != null)
+        {
+            boxBlocker.SetActive(boxBlockerStartState);
+        }
+
+        // Let Unity apply the new transforms
+        yield return new WaitForFixedUpdate();
+        yield return null;
+
+        // 5. Restore original Rigidbody settings
+        foreach (ResetObject obj in objectsToReset)
+        {
+            if (obj.target == null)
+                continue;
 
             Rigidbody rb = obj.target.GetComponent<Rigidbody>();
 
             if (rb != null)
             {
+                rb.isKinematic = obj.startIsKinematic;
+                rb.useGravity = obj.startUseGravity;
+                rb.constraints = obj.startConstraints;
+
                 rb.velocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
             }
         }
 
-        if (boxBlocker != null)
+        // 6. Turn magnet socket back on
+        if (magnetSocket != null)
         {
-            boxBlocker.SetActive(boxBlockerStartState);
+            magnetSocket.enabled = magnetSocketStartEnabled;
         }
     }
 }
