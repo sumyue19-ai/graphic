@@ -17146,6 +17146,8 @@ MonoBehaviour:
     startPosition: {x: 0, y: 0, z: 0}
     startRotation: {x: 0, y: 0, z: 0, w: 0}
     startActive: 0
+  boxBlocker: {fileID: 41552074}
+  magnetSocket: {fileID: 8477993898470408151}
 --- !u!4 &1455461254
 Transform:
   m_ObjectHideFlags: 0

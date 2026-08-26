@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class TrainingReset : MonoBehaviour
 {
@@ -15,9 +16,15 @@ public class TrainingReset : MonoBehaviour
 
     public List<ResetObject> objectsToReset = new List<ResetObject>();
 
+    public GameObject boxBlocker;
+
+    // The magnet's socket
+    public XRSocketInteractor magnetSocket;
+
+    private bool boxBlockerStartState;
+
     private void Start()
     {
-        // Save the original state when Play Mode starts
         foreach (ResetObject obj in objectsToReset)
         {
             if (obj.target == null)
@@ -27,23 +34,41 @@ public class TrainingReset : MonoBehaviour
             obj.startRotation = obj.target.transform.rotation;
             obj.startActive = obj.target.activeSelf;
         }
+
+        if (boxBlocker != null)
+        {
+            boxBlockerStartState = boxBlocker.activeSelf;
+        }
     }
 
     public void ResetTraining()
     {
+        // IMPORTANT:
+        // Release anything currently attached to the magnet socket.
+        if (magnetSocket != null)
+        {
+            var interactable = magnetSocket.GetOldestInteractableSelected();
+
+            if (interactable != null)
+            {
+                magnetSocket.interactionManager.SelectExit(
+                    magnetSocket,
+                    interactable
+                );
+            }
+        }
+
+        // Now reset all objects.
         foreach (ResetObject obj in objectsToReset)
         {
             if (obj.target == null)
                 continue;
 
-            // Restore active state
             obj.target.SetActive(obj.startActive);
 
-            // Restore position and rotation
             obj.target.transform.position = obj.startPosition;
             obj.target.transform.rotation = obj.startRotation;
 
-            // Stop physics movement
             Rigidbody rb = obj.target.GetComponent<Rigidbody>();
 
             if (rb != null)
@@ -51,6 +76,11 @@ public class TrainingReset : MonoBehaviour
                 rb.velocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
             }
+        }
+
+        if (boxBlocker != null)
+        {
+            boxBlocker.SetActive(boxBlockerStartState);
         }
     }
 }
