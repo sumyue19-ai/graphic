@@ -10,12 +10,16 @@ public class SafetyStationFeedback : MonoBehaviour
     public TextMeshProUGUI gogglesStatusText;
     public TextMeshProUGUI glovesStatusText;
 
-    [Header("Glove Visual (Right Hand)")]
-    public GameObject rightGloveVisual;
+    [Header("Console Barrier & Warning Interlock")]
+    public GameObject consoleBarrier;
+    public GameObject panelWarning;
 
-    [Header("Table Item (Left Hand Attachment)")]
-    public GameObject itemGloves;
-    public XRSocketInteractor socketGloves;
+    [Header("Glove Visuals")]
+    public GameObject rightGloveVisual; // Under RightHand Controller
+    public GameObject leftGloveVisual;  // Under LeftHand Controller
+
+    [Header("Table Item Display")]
+    public GameObject itemGloves; // The physical item on the desk station
 
     [Header("Transform Targets for Particles & Audio")]
     public Transform headTarget;
@@ -27,10 +31,23 @@ public class SafetyStationFeedback : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip equipSound;
 
+    // Internal state tracking for machinery interlock
+    private bool isHelmetEquipped = false;
+    private bool isGogglesEquipped = false;
+    private bool isGlovesEquipped = false;
+
+    private void Start()
+    {
+        if (consoleBarrier != null) consoleBarrier.SetActive(true);
+        if (panelWarning != null) panelWarning.SetActive(true);
+        if (rightGloveVisual != null) rightGloveVisual.SetActive(false);
+        if (leftGloveVisual != null) leftGloveVisual.SetActive(false);
+    }
+
     // Modern XR Toolkit 2.x/3.x event hooks
-    public void OnHelmetSelectEntered(SelectEnterEventArgs args) => SetItemEquipped("helmet", true);
-    public void OnGogglesSelectEntered(SelectEnterEventArgs args) => SetItemEquipped("goggles", true);
-    public void OnGlovesSelectEntered(SelectEnterEventArgs args) => SetItemEquipped("gloves", true);
+    public void OnHelmetSelectEntered(SelectEnterEventArgs args) => SetItemEquipped("helmet", true, args.interactorObject.transform);
+    public void OnGogglesSelectEntered(SelectEnterEventArgs args) => SetItemEquipped("goggles", true, args.interactorObject.transform);
+    public void OnGlovesSelectEntered(SelectEnterEventArgs args) => SetItemEquipped("gloves", true, args.interactorObject.transform);
 
     // Inspector helper functions
     public void EquipHelmet() => SetItemEquipped("helmet", true);
@@ -44,37 +61,48 @@ public class SafetyStationFeedback : MonoBehaviour
 
     public void SetItemEquipped(string itemType, bool isEquipped)
     {
-        // Fully ASCII-compatible formatted indicator (prevents Unicode \u2713 font error)
+        SetItemEquipped(itemType, isEquipped, null);
+    }
+
+    public void SetItemEquipped(string itemType, bool isEquipped, Transform interactorTransform)
+    {
         string status = isEquipped ? "<color=#00FF00>[OK]</color> " : "<color=#AAAAAA>[  ]</color> ";
         Transform spawnPoint = null;
 
         switch (itemType.ToLower())
         {
             case "helmet":
+                isHelmetEquipped = isEquipped;
                 if (helmetStatusText != null)
                     helmetStatusText.text = status + "Hard Hat Equipped";
-                spawnPoint = headTarget;
+                spawnPoint = headTarget != null ? headTarget : interactorTransform;
                 break;
 
             case "goggles":
+                isGogglesEquipped = isEquipped;
                 if (gogglesStatusText != null)
                     gogglesStatusText.text = status + "Safety Goggles Equipped";
-                spawnPoint = faceTarget;
+                spawnPoint = faceTarget != null ? faceTarget : interactorTransform;
                 break;
 
             case "gloves":
+                isGlovesEquipped = isEquipped;
                 if (glovesStatusText != null)
                     glovesStatusText.text = status + "Safety Gloves Equipped";
-                spawnPoint = handsTarget;
+                spawnPoint = handsTarget != null ? handsTarget : interactorTransform;
 
-                // 1. Show Right Glove on right hand
+                // 1. Turn on Right Controller visual asset
                 if (rightGloveVisual != null)
-                    rightGloveVisual.SetActive(true);
+                    rightGloveVisual.SetActive(isEquipped);
 
-                // 2. Lock Left Glove into socket permanently
-                if (isEquipped)
+                // 2. Turn on Left Controller visual asset 
+                if (leftGloveVisual != null)
+                    leftGloveVisual.SetActive(isEquipped);
+
+                // 3. Cleanly clear the table item out of sight
+                if (isEquipped && itemGloves != null)
                 {
-                    StartCoroutine(LockGlovesPermanently());
+                    StartCoroutine(HideTableItemCleanly());
                 }
                 break;
         }
@@ -103,43 +131,44 @@ public class SafetyStationFeedback : MonoBehaviour
                 if (audioSource != null && equipSound != null)
                     audioSource.PlayOneShot(equipSound);
             }
+
+            CheckAllEquipped();
         }
     }
 
-    private IEnumerator LockGlovesPermanently()
+    private void CheckAllEquipped()
     {
+        if (isHelmetEquipped && isGogglesEquipped && isGlovesEquipped)
+        {
+            if (consoleBarrier != null)
+                consoleBarrier.SetActive(false);
+
+            if (panelWarning != null)
+                panelWarning.SetActive(false);
+
+            Debug.Log("All PPE equipped! Console barrier removed.");
+        }
+    }
+
+    private IEnumerator HideTableItemCleanly()
+    {
+        // Wait exactly 1 frame for XRI to finish its internal pickup evaluation cycle
         yield return null;
 
         if (itemGloves != null)
         {
-            XRGrabInteractable grab = itemGloves.GetComponent<XRGrabInteractable>();
-            if (grab != null)
-                grab.enabled = false;
-
             Rigidbody rb = itemGloves.GetComponent<Rigidbody>();
             if (rb != null)
             {
+                // Clear any residual movement forces BEFORE turning off the object
+                // This completely suppresses the yellow "Setting velocity of a kinematic body" warning logs
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
                 rb.isKinematic = true;
-                rb.useGravity = false;
             }
 
-            Collider[] colliders = itemGloves.GetComponentsInChildren<Collider>();
-            foreach (Collider col in colliders)
-            {
-                col.enabled = false;
-            }
-
-            if (socketGloves != null)
-            {
-                itemGloves.transform.SetParent(socketGloves.transform.parent, true);
-                itemGloves.transform.position = socketGloves.transform.position;
-                itemGloves.transform.rotation = socketGloves.transform.rotation;
-            }
-        }
-
-        if (socketGloves != null)
-        {
-            socketGloves.enabled = false;
+            // Turn it completely off so it hides from the desk area instantly
+            itemGloves.SetActive(false);
         }
     }
 
@@ -148,5 +177,26 @@ public class SafetyStationFeedback : MonoBehaviour
         UnequipHelmet();
         UnequipGoggles();
         UnequipGloves();
+
+        if (rightGloveVisual != null) rightGloveVisual.SetActive(false);
+        if (leftGloveVisual != null) leftGloveVisual.SetActive(false);
+
+        if (itemGloves != null)
+        {
+            Rigidbody rb = itemGloves.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                // Safely restore physics options when resetting the item back to the table
+                rb.isKinematic = false;
+                rb.useGravity = true;
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
+
+            itemGloves.SetActive(true);
+        }
+
+        if (consoleBarrier != null) consoleBarrier.SetActive(true);
+        if (panelWarning != null) panelWarning.SetActive(true);
     }
 }
