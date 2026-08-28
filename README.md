@@ -1,2 +1,7 @@
-# UCCD3084_VR-Training
-Starter Unity VR project for UCCD3084.
+# UCCD3084 Group Assignment - Factory VR Training Simulation: Repair, Optimization & Custom Feature
+## Group 1
+
+Yeo Pei Han  
+Leong Sum Yue  
+Tee Ing Harn  
+Teoh Wei Zhong
